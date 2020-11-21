@@ -10,11 +10,17 @@ app = FastAPI(
     docs_url="/docs",
 )
 
-app.include_router(userRouter, prefix="/users/v1")
-
 models_list = [
     "fastAPIBolierPlate.apps.users.models",
 ]
+
+all_routes = [
+    {"route": userRouter, "prefix": "/users/v1"},
+]
+
+for route in all_routes:
+    app.include_router(route["route"], prefix=route.get("prefix", ""))
+
 
 register_tortoise(
     app,
